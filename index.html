@@ -3,44 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control Panel</title>
+    <title>ESP32 Control Center</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
         :root { --accent: #93c90f; --bg: #0a0a0a; }
-        body { margin: 0; background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; }
-        .container { width: 100%; max-width: 600px; display: grid; gap: 20px; }
-        .card { background: #161616; padding: 20px; border-radius: 15px; border-left: 4px solid var(--accent); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h2 { margin: 0 0 15px 0; color: var(--accent); font-size: 1.2rem; }
-        textarea { width: 100%; height: 100px; background: #222; border: 1px solid #333; color: white; border-radius: 8px; padding: 10px; box-sizing: border-box; resize: none; margin-bottom: 10px; }
-        button { width: 100%; padding: 12px; background: var(--accent); border: none; border-radius: 8px; color: black; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
-        button:active { transform: scale(0.95); }
-        @media (max-width: 480px) { h2 { font-size: 1rem; } .card { padding: 15px; } }
+        body { margin: 0; background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 20px; }
+        .grid { width: 100%; max-width: 800px; display: grid; gap: 20px; }
+        .card { background: #121212; padding: 25px; border-radius: 20px; border: 1px solid #222; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        h2 { color: var(--accent); margin-top: 0; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 2px; }
+        textarea, input { width: 100%; background: #1a1a1a; border: 1px solid #333; color: white; padding: 15px; border-radius: 10px; box-sizing: border-box; margin-bottom: 10px; font-family: monospace; }
+        button { width: 100%; padding: 15px; background: var(--accent); border: none; border-radius: 10px; color: black; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { filter: brightness(1.2); }
+        .log { background: black; padding: 15px; border-radius: 10px; height: 150px; overflow-y: auto; color: #93c90f; font-family: monospace; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="card" id="cmd-box">
-            <h2>COMMAND LINE</h2>
-            <textarea placeholder="Komut girin..."></textarea>
-            <button onclick="animateBtn(this)">ÇALIŞTIR</button>
+    <div class="grid">
+        <div class="card" id="cmd">
+            <h2>CMD TERMINAL</h2>
+            <textarea id="cmdInput" placeholder="CMD komutu girin (örn: start notepad)"></textarea>
+            <button onclick="sendCommand('cmd')">KOMUTU ÇALIŞTIR</button>
         </div>
-        <div class="card" id="task-box">
+
+        <div class="card" id="task">
             <h2>TASK MANAGER</h2>
-            <div id="list" style="font-size: 0.9rem; opacity: 0.8;">Sistem izleniyor...</div>
+            <div id="taskList" class="log">Sistem verileri yükleniyor...</div>
+        </div>
+
+        <div class="card" id="script">
+            <h2>SCRIPT UPLOAD</h2>
+            <textarea id="scriptInput" placeholder="PowerShell/BadUSB kodu buraya..."></textarea>
+            <button onclick="sendCommand('script')">GÖNDER VE ÇALIŞTIR</button>
         </div>
     </div>
 
     <script>
-        gsap.from(".card", { duration: 1, opacity: 0, y: 50, stagger: 0.2, ease: "power3.out" });
-        
-        function animateBtn(btn) {
-            gsap.to(btn, { scale: 0.9, duration: 0.1, yoyo: true, repeat: 1 });
-        }
+        gsap.from(".card", { duration: 0.8, opacity: 0, y: 50, stagger: 0.2, ease: "power3.out" });
 
-        setInterval(() => {
-            document.getElementById('list').innerHTML = "explorer.exe - OK<br>chrome.exe - OK<br>system.sys - OK";
-        }, 2000);
+        function sendCommand(type) {
+            let val = type === 'cmd' ? document.getElementById('cmdInput').value : document.getElementById('scriptInput').value;
+            alert("Komut gönderildi: " + val);
+            // Buraya Firebase veritabanı yazma kodun gelecek
+        }
     </script>
 </body>
 </html>
