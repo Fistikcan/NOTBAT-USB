@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Sitem</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: #111; color: white; font-family: sans-serif; }
+        h1 { font-size: 3rem; }
+    </style>
+</head>
+<body>
+
+    <h1>Hoş Geldin!</h1>
+
+    <script>
+        // Animasyon kodu: Yazı aşağıdan yukarıya yumuşak bir şekilde gelir
+        gsap.from("h1", {duration: 1.5, opacity: 0, y: 50, ease: "power2.out"});
+    </script>
+</body>
+</html>
